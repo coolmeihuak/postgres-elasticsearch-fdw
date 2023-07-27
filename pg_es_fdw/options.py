@@ -33,6 +33,7 @@ class ElasticsearchFDWOptions(object):
 
         self.host = options.pop("host", "localhost")
         self.port = _int_option(options, key="port", default=9200)
+        self.scheme = _int_option(options, key="scheme", default="http")
         self.timeout = _int_option(options, key="timeout", default=10)
         self.auth = _get_authentication(options)
         self.options = options
@@ -43,7 +44,7 @@ class ElasticsearchFDWOptions(object):
         """
         # () -> Elasticsearch
         return Elasticsearch(
-            [{"host": self.host, "port": self.port}],
+            [{"host": self.host, "port": self.port, 'scheme': self.scheme}],
             http_auth=self.auth,
             timeout=self.timeout,
             **self.options
